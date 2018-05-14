@@ -1,0 +1,68 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Example</title>
+</head>
+<body><center>
+  <input type="text" name="AS28" id="As28" value="1">
+  <input type="text" name="AS30" id="As30" value="2">
+  <form id="orderform">
+    <table id="orderTable">
+      <tr>
+        <th>Chk</th>
+        <th>QR Code</th>
+        <th>Sleeve</th>
+        <th>Type</th>
+        <th>S28</th> 
+        <th>S30</th>
+        <th>Count</th>
+      </tr>
+    </table>
+    <br/>
+    <button id="deletechecked" type="button" onclick="deleteRows();">Delete Marked</button>
+    <button id="restore" type="button" onclick="restore_from_local();">restore</button><br>
+    Total:
+    <input type="text" name="total" id="total">
+  </form>
+  </center>
+</body>
+</html>
+
+<script type="text/javascript">
+  data = {
+    table_id:"orderTable",
+    checkbox:true,
+    class:"form-control",
+    qrcode_values:{
+      "10001":{
+        "result":"hello1",
+        "description":"h/s"
+      },
+      "10002":{
+        "result":"hello2",
+        "description":"f/s"
+      }
+    },
+    description:"sleeve",
+    userdefined_description:true,
+    description_values:["h/s","f/s"],
+    total_value_field:"total",
+    sizes: [
+    {   
+      name:"s28",
+      type:"number",
+      id:"s28"
+    },
+    {   
+      name:"s30",
+      type:"number",
+      id:"s30"
+    }
+    ]
+  };
+  //table_id = "orderTable";
+</script>
+<script src="duplicate_card.js"></script>
+<script src="localstorage.js"></script>
+<script src="normalform.js"></script>
