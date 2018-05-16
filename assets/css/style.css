@@ -1,0 +1,29 @@
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.top-row{
+  background-color:#112146;
+  color: #fff;
+  padding: 20px; 
+  color: white;
+}
+
+.small-input{
+	width: 25px;
+	border: none;
+}
+
+.small-input-long{
+	width: 50px;
+	border: none;
+}
+
+.table-input{
+
+}
+
+.navi-buttons{
+	padding-right: 10px;
+}

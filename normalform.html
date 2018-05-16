@@ -1,0 +1,251 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title></title>
+  <link rel="stylesheet" href="./assets/css/bootstrap-grid.css">
+  <link rel="stylesheet" href="./assets/css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="./assets/css/bootstrap.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-sm bg-light navbar-light">
+    <a class="navbar-brand" href="#">
+      <img src="./assets/images/otto-xs.png"  alt="logo" style="width:40px;" />
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Express Form</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Normal Form</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Replicate</a>
+        </li>    
+      </ul>
+    </div> 
+    <div class="navi-buttons">
+      <button id="deletechecked" class="btn btn-danger" onclick="deleteRows();">Delete Marked</button>
+      <button id="restore" class="btn btn-primary" onclick="restore_from_local();">restore</button>
+    </div>
+    
+    <input class="form-control mr-sm-2" type="text" name="total" id="total" placeholder="Total" style="width: 200px;">
+    <button class="btn btn-success" type="submit">Submit</button> 
+  </nav>
+  <div>
+    <div class="row">
+      <div class="col-md-3 top-row">
+        <div class="container">
+          OTTO<br>Formal Shirts<br>Customer name
+        </div>
+      </div>
+      <div class="col-md-3 top-row">
+        <div class="container">
+          <center>
+            <table style="color: white;">
+              <tr>
+                <td></td>
+                <td>28</td>
+                <td>30</td>
+                <td>32</td>
+                <td>34</td>
+                <td>36</td>
+                <td>38</td>
+                <td>40</td>
+              </tr>
+              <tr>
+                <td>A</td>
+                <td><input type="text" name="AS28" id="As28" value="1" class="small-input"></td>
+                <td><input type="text" name="AS30" id="As30" value="2" class="small-input"></td>
+                <td><input type="text" name="AS32" id="As32" value="1" class="small-input"></td>
+                <td><input type="text" name="AS34" id="As34" value="1" class="small-input"></td>
+                <td><input type="text" name="AS36" id="As36" value="2" class="small-input"></td>
+                <td><input type="text" name="AS38" id="As38" value="1" class="small-input"></td>
+                <td><input type="text" name="AS40" id="As40" value="2" class="small-input"></td>
+              </tr>
+              <tr>
+                <td>B</td>
+                <td><input type="text" name="BS28" id="Bs28" value="1" class="small-input"></td>
+                <td><input type="text" name="BS30" id="Bs30" value="2" class="small-input"></td>
+                <td><input type="text" name="BS32" id="Bs32" value="1" class="small-input"></td>
+                <td><input type="text" name="BS34" id="Bs34" value="1" class="small-input"></td>
+                <td><input type="text" name="BS36" id="Bs36" value="2" class="small-input"></td>
+                <td><input type="text" name="BS38" id="Bs38" value="1" class="small-input"></td>
+                <td><input type="text" name="BS40" id="Bs40" value="2" class="small-input"></td>
+              </tr>
+              <tr>
+                <td>C</td>
+                <td><input type="text" name=CBS28" id="Cs28" value="1" class="small-input"></td>
+                <td><input type="text" name="CS30" id="C30" value="2" class="small-input"></td>
+                <td><input type="text" name="CS32" id="Cs32" value="1" class="small-input"></td>
+                <td><input type="text" name="CS34" id="Cs34" value="1" class="small-input"></td>
+                <td><input type="text" name="CS36" id="Cs36" value="2" class="small-input"></td>
+                <td><input type="text" name="CS38" id="Cs38" value="1" class="small-input"></td>
+                <td><input type="text" name="CS40" id="Cs40" value="2" class="small-input"></td>
+              </tr>
+            </table>
+          </center>
+        </div>
+      </div>
+      <div class="col-md-3 top-row">
+        <div class="container">
+          <center>
+            <table style="color: white;">
+              <tr>
+                <td></td>
+                <td>28</td>
+                <td>30</td>
+                <td>32</td>
+                <td>34</td>
+                <td>36</td>
+                <td>38</td>
+                <td>40</td>
+              </tr>
+              <tr>
+                <td>D</td>
+                <td><input type="text" id="Ds28" value="1" class="small-input"></td>
+                <td><input type="text" id="Ds30" value="2" class="small-input"></td>
+                <td><input type="text" id="Ds32" value="1" class="small-input"></td>
+                <td><input type="text" id="Ds34" value="1" class="small-input"></td>
+                <td><input type="text" id="Ds36" value="2" class="small-input"></td>
+                <td><input type="text" id="Ds38" value="1" class="small-input"></td>
+                <td><input type="text" id="Ds40" value="2" class="small-input"></td>
+              </tr>
+              <tr>
+                <td>E</td>
+                <td><input type="text" id="Es28" value="1" class="small-input"></td>
+                <td><input type="text" id="Es30" value="2" class="small-input"></td>
+                <td><input type="text" id="Es32" value="1" class="small-input"></td>
+                <td><input type="text" id="Es34" value="1" class="small-input"></td>
+                <td><input type="text" id="Es36" value="2" class="small-input"></td>
+                <td><input type="text" id="Es38" value="1" class="small-input"></td>
+                <td><input type="text" id="Es40" value="2" class="small-input"></td>
+              </tr>
+              <tr>
+                <td>F</td>
+                <td><input type="text" id="Fs28" value="1" class="small-input"></td>
+                <td><input type="text" id="Fs30" value="2" class="small-input"></td>
+                <td><input type="text" id="Fs32" value="1" class="small-input"></td>
+                <td><input type="text" id="Fs34" value="1" class="small-input"></td>
+                <td><input type="text" id="Fs36" value="2" class="small-input"></td>
+                <td><input type="text" id="Fs38" value="1" class="small-input"></td>
+                <td><input type="text" id="Fs40" value="2" class="small-input"></td>
+              </tr>
+            </table>
+          </center>
+        </div>
+      </div>
+      <div class="col-md-3 top-row">
+        <div class="container">
+          <table id="sleeves" style="color: white;" class="table-sm" >
+            <tr>
+              <th>Type</th>
+              <th>Option</th>
+              <th>Qty</th>
+            </tr>
+            <tr>
+              <td>Half Sleeve</td>
+              <td><div id = "thsp">0</div></td>
+              <td><div id = "ths">0</div></td>
+            </tr>
+            <tr>
+              <td>Full Sleeve</td>
+              <td><div id = "tfsp">0</div></td>
+              <td><div id = "tfs">0</div></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container" style="padding: 30px;">
+    <center>
+      <form id="orderform">
+        <table id="orderTable" class="table-borderless">
+          <tr>
+            <th>Chk</th>
+            <th>QR Code</th>
+            <th>Type</th>
+            <th>S28</th> 
+            <th>S30</th>
+            <th>S32</th>
+            <th>S34</th>
+            <th>S36</th>
+            <th>S38</th>
+            <th>S40</th>
+            <th>Count</th>
+          </tr>
+        </table>
+        <br/>
+      </form>
+    </center>
+  </div>
+</body>
+<script type="text/javascript">
+  data = {
+    table_id:"orderTable",
+    checkbox:true,
+    class:"table-input",
+    qrcode_values:{
+      "10001":{
+        "result":"hello1",
+        "description":"h/s"
+      },
+      "10002":{
+        "result":"hello2",
+        "description":"f/s"
+      }
+    },
+    description:"sleeve",
+    userdefined_description:true,
+    description_values:["h/s","f/s"],
+    total_value_field:"total",
+    sizes: [
+    {   
+      name:"s28",
+      type:"number",
+      id:"s28"
+    },
+    {   
+      name:"s30",
+      type:"number",
+      id:"s30"
+    },
+    {   
+      name:"s32",
+      type:"number",
+      id:"s32"
+    },
+    {   
+      name:"s34",
+      type:"number",
+      id:"s34"
+    },
+    {   
+      name:"s36",
+      type:"number",
+      id:"s36"
+    },
+    {   
+      name:"s38",
+      type:"number",
+      id:"s38"
+    }
+    ]
+  };
+  //table_id = "orderTable";
+</script>
+<script src="Form/duplicate_card.js"></script>
+<script src="Form/localstorage.js"></script>
+<script src="Form/normalform.js"></script>
+<script src="./assets/js/bootstrap.bundle.js"></script>
+<script src="./assets/js/bootstrap.js"></script>
+
+</html>
