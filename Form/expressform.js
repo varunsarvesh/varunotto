@@ -231,7 +231,7 @@ function check_for_duplicate(qrcode, table_id){
 function deleteRows(table_id){
 	var table = document.getElementById(table_id);
 	var rowCount = table.rows.length;
-	for(var i=0; i<rowCount; i++) {
+	for(var i=2; i<rowCount; i++) {
 		var row = table.rows[i];
 		//var current_rowid = row.id;
 		var chkbox = row.cells[0].childNodes[0];
@@ -305,25 +305,61 @@ function consolidate(){
 	var row_num = 0;
 	consolidated_data["id"] = data.consolidated_table_id;
 	for (j in data.tables){
-		var table = document.getElementById(data.tables[j].table_id);
+		var size_values = {};
+		var table_id = data.tables[j].table_id;
+		var table = document.getElementById(table_id);
 		var rowCount = table.rows.length;
 		var description = data.tables[j].description_value;
+		var opt_count = +document.getElementById(total_field[table_id]).value;
+		if(opt_count > 0){
+			for(k in data.sizes){
+				var size_id = data.sizes[k].id;
+				var temp = +document.getElementById(table_id + size_id + "_C").value;
+				size_values["x"+size_id] = Math.floor(temp/opt_count);
+				size_values["y"+size_id] = temp % opt_count;
+				size_values["z"+size_id] = opt_count - size_values["y"+size_id];
+			}
+		}
+		console.log(size_values);
 		for(var i=1; i<rowCount; i++) {
 			var row = table.rows[i];
 			var qrcode = row.cells[1].childNodes[0];
 			if(qrcode.value !== ""){
 				var new_row = {};
+				var row_total = 0;
 				new_row["qrcode[]"] =  qrcode.value;
 				if(description !== false){
 					new_row["description[]"] = description;
 				}
+				var sizes_length = data.sizes.length;
+				sizes_length = Math.round(sizes_length / 2);
 				for (k in data.sizes){
-					new_row[data.sizes[k].id + "[]"] = "0";
+					var size_id = data.sizes[k].id;
+					var val = size_values["x"+size_id];
+					if(sizes_length > 0){
+						if(size_values["y"+size_id] > 0){
+							val ++;
+							size_values["y"+size_id] --;
+						}
+						sizes_length --;
+					}
+					else{
+						if(size_values["z"+size_id] > 0){
+							size_values["z"+size_id] --;
+						}
+						else{
+							val ++;
+						}
+					}
+					row_total += val;
+					new_row[data.sizes[k].id + "[]"] = val;
 				}
+				new_row["count[]"] = row_total;
 				consolidated_data["row" + row_num.toString()] = new_row;
 				row_num ++;
 			}
 		}
 	}
 	local_store(consolidated_data);
+	window.location.href = "./normalform.html?run=restore";
 }

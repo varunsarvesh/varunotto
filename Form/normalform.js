@@ -2,6 +2,17 @@
 This file contains all required javascript functions for Normal form.
 */
 
+window.onload = function(){
+	var queryParams = simpleQueryString.parse(window.location.href)
+	if (
+		queryParams !== undefined && queryParams.run !== null && queryParams.run !== undefined
+		) {
+		if (queryParams.run === 'restore') {
+			restore_from_local();
+		}
+	}
+}
+
 rowId = 0;
 new_qrcode = false;
 new_description = false;
@@ -70,7 +81,7 @@ function initialize(){
 	add_type_row("TypeTable2","E");
 	add_type_row("TypeTable2","F");
 	if (data.description !== false) {
-	table = document.getElementById("summary");
+		table = document.getElementById("summary");
 		row = table.rows[0];
 		cellCount = 0;
 		field = row.insertCell(cellCount++);
@@ -266,7 +277,7 @@ function addRow() {
 function deleteRows() {
 	var table = document.getElementById(data.table_id);
 	var rowCount = table.rows.length;
-	for(var i=0; i<rowCount; i++) {
+	for(var i=2; i<rowCount; i++) {
 		var row = table.rows[i];
 		var current_rowid = row.id;
 		var chkbox = row.cells[0].childNodes[0];
