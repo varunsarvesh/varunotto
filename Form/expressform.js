@@ -7,6 +7,7 @@ table_index = {};
 new_qrcode = {};
 total_field = {};
 restored_from_local = {};
+consolidated_data = {};
 input_data = {
 	id: data.general_id
 };
@@ -84,6 +85,35 @@ function addRow(table_id){
 	rowId[table_id] ++;
 }
 
+function calculate_size_count(table_id, count_percent, field_id){
+	var total_value_field = total_field[table_id];
+	var total_value = +document.getElementById(total_value_field).value;
+	var z = 0;
+	if(+count_percent > 0){
+		if(+count_percent < 5 ){
+			z = +count_percent * total_value;
+		}
+		else if(+count_percent < 5001){
+			z = (+count_percent/100) * total_value;
+		}
+	}
+	document.getElementById(field_id + "_C").value = Math.round(z);
+	var total = 0;
+	for(i in data.sizes){
+		var x = +document.getElementById(table_id + data.sizes[i].id + "_C").value;
+		total += x;
+	}
+	document.getElementById(total_value_field + "_C").value = Math.round(total);
+
+	var grand_total = 0;
+	for(i in data.tables){
+		var x = +document.getElementById(data.tables[i].total_value_field + "_C").value;
+		grand_total += x;
+	}
+	document.getElementById(data.total_value_field).value = grand_total;
+
+}
+
 function initialize_express_mode(){
 	for (i in data.tables) {
 		rowId[data.tables[i].table_id] = 0;
@@ -94,7 +124,70 @@ function initialize_express_mode(){
 		input_data[data.tables[i].table_id] = {};
 		addRow(data.tables[i].table_id);
 	}
-
+	var table = document.getElementById("count_table");
+	var row = table.rows[0];
+	var field, element, cellCount = 0;
+	if(data.description !== false){
+		field = row.insertCell(cellCount++);
+		field.innerHTML = "Descrip";
+	}
+	for(i in data.sizes){
+		field = row.insertCell(cellCount++);
+		field.innerHTML = data.sizes[i].name;
+	}
+	field = row.insertCell(cellCount++);
+	field.innerHTML = "Total";
+	var row_count = 1;
+	for(i in data.tables){
+		cellCount = 0;
+		row = table.insertRow(row_count++);
+		field = row.insertCell(cellCount++);
+		field.innerHTML = data.tables[i].description_value;
+		for (j in data.sizes){
+			field = row.insertCell(cellCount++);
+			element = document.createElement("input");
+			element.type = "number";
+			element.id = data.tables[i].table_id + data.sizes[j].id;
+			element.name = data.tables[i].table_id;
+			element.className += " small-input-long ";
+			element.addEventListener("keyup", function(event) {
+				event.preventDefault();
+				var count_percent = this.value;
+				var field_id = this.id;
+				var table_id = this.name;
+				calculate_size_count(table_id, count_percent, field_id);
+			});
+			field.appendChild(element);
+		}
+		cellCount = 0;
+		row = table.insertRow(row_count++);
+		field = row.insertCell(cellCount++);
+		element = document.createElement("input");
+		element.type = "number";
+		element.readOnly = true;
+		element.id = data.tables[i].total_value_field;
+		element.name = data.tables[i].total_value_field;
+		element.className += " small-input-long ";
+		field.appendChild(element);
+		for (j in data.sizes){
+			field = row.insertCell(cellCount++);
+			element = document.createElement("input");
+			element.type = "number";
+			element.readOnly = true;
+			element.id = data.tables[i].table_id + data.sizes[j].id + "_C";
+			element.name = data.tables[i].table_id + data.sizes[j].id + "_C";
+			element.className += " small-input-long ";
+			field.appendChild(element);
+		}
+		field = row.insertCell(cellCount++);
+		element = document.createElement("input");
+		element.type = "number";
+		element.id = data.tables[i].total_value_field + "_C";
+		element.name = data.tables[i].total_value_field+ "_C";
+		element.readOnly = true;
+		element.className += " small-input-long ";
+		field.appendChild(element);
+	}
 }
 initialize_express_mode();
 
@@ -153,7 +246,14 @@ function deleteRows(table_id){
 	//local_store(input_data);
 }
 
+function delete_all(){
+	for(i in data.tables){
+		deleteRows(data.tables[i].table_id);
+	}
+}
+
 function restore_form_local(){
+	document.getElementById("restore").style.display = "none";
 	var local_data;
 	if(local_data = local_retrive(data.general_id)){
 		for (i in data.tables) {
@@ -196,6 +296,34 @@ function restore_form_local(){
 			}
 			addRow(table_id);
 			input_data[table_id] = local_data[table_id];
+			document.getElementById(total_field[table_id]).value = table.rows.length - 2;
 		}
 	}
+}
+
+function consolidate(){
+	var row_num = 0;
+	consolidated_data["id"] = data.consolidated_table_id;
+	for (j in data.tables){
+		var table = document.getElementById(data.tables[j].table_id);
+		var rowCount = table.rows.length;
+		var description = data.tables[j].description_value;
+		for(var i=1; i<rowCount; i++) {
+			var row = table.rows[i];
+			var qrcode = row.cells[1].childNodes[0];
+			if(qrcode.value !== ""){
+				var new_row = {};
+				new_row["qrcode[]"] =  qrcode.value;
+				if(description !== false){
+					new_row["description[]"] = description;
+				}
+				for (k in data.sizes){
+					new_row[data.sizes[k].id + "[]"] = "0";
+				}
+				consolidated_data["row" + row_num.toString()] = new_row;
+				row_num ++;
+			}
+		}
+	}
+	local_store(consolidated_data);
 }

@@ -4,7 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title></title>
+  <title>OTTO</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32x32.png">
   <link rel="stylesheet" href="./assets/css/bootstrap-grid.css">
   <link rel="stylesheet" href="./assets/css/bootstrap-reboot.css">
   <link rel="stylesheet" href="./assets/css/bootstrap.css">
@@ -24,7 +25,7 @@
           <a class="nav-link" href="#">Express Form</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Normal Form</a>
+          <a class="nav-link" href="normalform.html">Normal Form</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Replicate</a>
@@ -32,13 +33,12 @@
       </ul>
     </div> 
     <div class="navi-buttons">
-      <button id="deletechecked" class="btn btn-danger" onclick="deleteRows('table1');">Delete 1</button>
-      <button id="deletechecked" class="btn btn-danger" onclick="deleteRows('table2');">Delete 2</button>
+      <button id="deletechecked" class="btn btn-danger" onclick="delete_all();">Delete Marked</button>
       <button id="restore" class="btn btn-primary" onclick="restore_form_local();">restore</button>
     </div>
     
     <input class="form-control mr-sm-2" type="text" name="total" id="total" placeholder="Total" style="width: 200px;">
-    <button class="btn btn-success" type="submit">Submit</button> 
+    <button id="Consolidate" class="btn btn-success" onclick="consolidate();">Consolidate</button> 
   </nav>
   <div>
     <div class="row">
@@ -50,8 +50,9 @@
       <div class="col-md-8 top-row">
         <div class="container">
           <center>
-            <input type="text" name="total1" id="total1"  class="small-input-long">
-            <input type="text" name="total2" id="total2"  class="small-input-long">
+            <table id="count_table" style="color: white;">
+              <tr></tr>
+            </table>
           </center>
         </div>
       </div>
@@ -93,6 +94,8 @@
     checkbox:true,
     class:"",
     description:"sleeve",
+    total_value_field:"total",
+    consolidated_table_id:"orderTable",
     tables:[
     {
       table_id:"table1",
@@ -105,18 +108,6 @@
           "result":"hello4"
         }
       },
-      sizes:[
-      {
-        name:"s28",
-        type:"number",
-        id:"s28"
-      },
-      {
-        name:"s30",
-        type:"number",
-        id:"s30"
-      }
-      ],
       total_value_field:"total1"
     },
     {
@@ -130,19 +121,39 @@
           "result":"hello2"
         }
       },
-      sizes:[
-      {
-        name:"s28",
-        type:"number",
-        id:"s28"
-      },
-      {
-        name:"s30",
-        type:"number",
-        id:"s30"
-      }
-      ],
       total_value_field:"total2"
+    }
+    ],
+    sizes: [
+    {   
+      name:"s28",
+      type:"number",
+      id:"s28"
+    },
+    {   
+      name:"s30",
+      type:"number",
+      id:"s30"
+    },
+    {   
+      name:"s32",
+      type:"number",
+      id:"s32"
+    },
+    {   
+      name:"s34",
+      type:"number",
+      id:"s34"
+    },
+    {   
+      name:"s36",
+      type:"number",
+      id:"s36"
+    },
+    {   
+      name:"s38",
+      type:"number",
+      id:"s38"
     }
     ]
   };

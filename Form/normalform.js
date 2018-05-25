@@ -11,6 +11,92 @@ input_data = {
 	id: data.table_id
 };
 
+function initialize_type(type_table_id){
+	var table = document.getElementById(type_table_id);
+	var row = table.rows[0];
+	var field, cellCount = 0;
+	field = row.insertCell(cellCount++);
+	for (i in data.sizes) {
+		field = row.insertCell(cellCount++);
+		field.innerHTML = data.sizes[i].name;
+	}
+}
+
+function add_type_row(type_table_id, row_name){
+	var table = document.getElementById(type_table_id);
+	var rowCount = table.rows.length;
+	var row = table.insertRow(rowCount);
+	var field, element, cellCount = 0;
+	field = row.insertCell(cellCount++);
+	field.innerHTML = row_name;
+	for (i in data.sizes) {
+		field = row.insertCell(cellCount++);
+		element = document.createElement("input");
+		element.type = "number";
+		element.className += "small-input";
+		element.id = row_name + data.sizes[i].name;
+		field.appendChild(element);
+	}
+}
+
+function initialize(){
+	var table = document.getElementById(data.table_id);
+	var row = table.rows[0];
+	var field, cellCount = 0;
+	if (data.checkbox === true) {
+		field = row.insertCell(cellCount++);
+		field.innerHTML = "Chk";
+	}
+	field = row.insertCell(cellCount++);
+	field.innerHTML = "QR Code";
+	if (data.description !== false) {
+		field = row.insertCell(cellCount++);
+		field.innerHTML = "Description";
+	}
+	field = row.insertCell(cellCount++);
+	field.innerHTML = "Type";
+	for (i in data.sizes) {
+		field = row.insertCell(cellCount++);
+		field.innerHTML = data.sizes[i].name;
+	}
+	field = row.insertCell(cellCount++);
+	field.innerHTML = "Count";
+	initialize_type("TypeTable1");
+	add_type_row("TypeTable1","A");
+	add_type_row("TypeTable1","B");
+	add_type_row("TypeTable1","C");
+	initialize_type("TypeTable2");
+	add_type_row("TypeTable2","D");
+	add_type_row("TypeTable2","E");
+	add_type_row("TypeTable2","F");
+	if (data.description !== false) {
+	table = document.getElementById("summary");
+		row = table.rows[0];
+		cellCount = 0;
+		field = row.insertCell(cellCount++);
+		field.innerHTML = "Description";
+		field = row.insertCell(cellCount++);
+		field.innerHTML = "Option";
+		field = row.insertCell(cellCount++);
+		field.innerHTML = "Qty";
+		for (i in data.description_values) {
+			cellCount = 0;
+			var rowCount = table.rows.length;
+			row = table.insertRow(rowCount);
+			field = row.insertCell(cellCount++);
+			field.innerHTML = data.description_values[i];
+			field = row.insertCell(cellCount++);
+			field.id = "summary" + data.description_values[i] + "option";
+			field.innerHTML = "0";
+			field = row.insertCell(cellCount++);
+			field.id = "summary" + data.description_values[i] + "qty";
+			field.innerHTML = "0";
+		}
+	}
+}
+
+initialize();
+
 function addRow() {
 	if(new_qrcode || new_description){
 		return;
@@ -192,15 +278,36 @@ function deleteRows() {
 		}
 	}
 	local_store(input_data);
+	retotal();
 }
 
 function retotal(){
-	var counts = document.querySelectorAll('.count');
 	var total = 0;
-	for (var i = 0, len = counts.length; i < len; i++) {
-		total = total + +counts[i].value;
+	for (var i = 0; i <= rowId; i++) {
+		if (document.getElementById("count"+i) != null){
+			var x = document.getElementById("count"+i).value;
+			total += +x;
+		}
 	}
 	document.getElementById(data.total_value_field).value = total;
+	if (data.description !== false) {
+		for (j in data.description_values) {
+			var option = 0;
+			var qty = 0;
+			for (var i = 0; i <= rowId; i++) {
+				if (document.getElementById("description"+i) != null){
+					if(document.getElementById("description"+i).value === data.description_values[j]){
+						option++;
+						var x = document.getElementById("count"+i).value;
+						total += +x;
+						qty += +x;
+					}
+				}
+			}
+			document.getElementById("summary"+data.description_values[j]+"option").innerHTML = option;
+			document.getElementById("summary"+data.description_values[j]+"qty").innerHTML = qty;
+		}
+	}
 	return total;
 }
 
@@ -301,11 +408,12 @@ function create_input_data(current_rowid){
 	local_store(input_data);
 }
 
+
 function work_for_type(option, currentrow){
 	var total = 0;
-	if(option === "A"){
+	if(option === "A" || option === "B" || option === "C" || option === "D" || option === "E" || option === "F"){
 		for(i in data.sizes){
-			var value = document.getElementById("A" + data.sizes[i].id).value;
+			var value = document.getElementById(option + data.sizes[i].id).value;
 			document.getElementById(data.sizes[i].id + currentrow).value = value;
 			total = total + +value;
 		}
@@ -406,6 +514,7 @@ function restore_from_local(){
 			}
 		}
 		retotal();
+		document.getElementById("restore").style.display = "none";
 		new_qrcode = false;
 		new_description = false;
 		addRow();
