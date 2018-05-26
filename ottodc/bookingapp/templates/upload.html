@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>upload</title>
 </head>
 <body>
-$END$
+<form action="{% url 'dealer_details' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="upload">
+</form>
 </body>
 </html>

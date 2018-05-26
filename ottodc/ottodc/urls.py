@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from bookingapp.urls import otto_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+urlpatterns += otto_urls
